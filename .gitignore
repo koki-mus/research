@@ -1,3 +1,4 @@
+priv*
 .env
 env/
 .vs
@@ -7,10 +8,10 @@ env/
 bigendian_data/
 imgout/
 __pycache__/
+private/
 
 *.log
 etc/
-endian.c
 
 ####c
 # Prerequisites
