@@ -9,9 +9,11 @@ bigendian_data/
 imgout/
 __pycache__/
 private/
-
+research.code-workspace
 *.log
 etc/
+snap/
+data/
 
 ####c
 # Prerequisites

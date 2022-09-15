@@ -5,6 +5,20 @@ import seaborn as sns
 import cv2
 
 #データのロード
+def load(filename, z=1):
+    """
+    little endianのデータの読み込み。z=1でz方向が一層だけのデータを
+    z=3でz方向が3のデータを1層だけ読み込む
+    """
+    f = open(filename,mode='rb')
+    #:525825でz方向の1個目だけ(xy平面一つ)とる。reshapeでx,yの整形
+    if z == 1:
+        data = np.fromfile(f, dtype='f',sep='').reshape(513,1025)
+    elif z == 3:
+        data = np.fromfile(f, dtype='f',sep='')[:525825].reshape(513,1025)
+    f.close()
+    return data
+
 def load_bigendian(filename):
     """
     fort.111.0等のビッグエンディアンのデータをリトルエンディアンに変換し、
@@ -16,10 +30,12 @@ def load_bigendian(filename):
     f.close()
     return data
 #ヒートマップの生成と保存
-def show(data: np.array, imgname=False):
+def show(data: np.array, imgname=False, bar_range=None):
     plt.clf()
-    #sns.heatmap(data, vmin=0, vmax=0.5)
-    sns.heatmap(data)
+    if bar_range == None:
+        sns.heatmap(data)
+    else:
+        sns.heatmap(data, vmin=bar_range[0], vmax=bar_range[1])
     if imgname:
         plt.savefig(f"{imgname}")
 
@@ -54,7 +70,7 @@ def convolute(data: np.array, carnel: np.array, padding=0, stride=1):
         for resultY in range(result_height):
             for resultX in range(result_width):
                 array = data[orgY : orgY + c_height, orgX : orgX + c_width]
-                a = convoluted[resultY]
+                # a = convoluted[resultY]
                 convoluted[resultY][resultX] = calc(array)
                 orgX += stride
 
@@ -63,7 +79,7 @@ def convolute(data: np.array, carnel: np.array, padding=0, stride=1):
         return convoluted
 
     return loop_calc()
-        
+
 def ave_carnel(size:int):
     """
     畳み込みにおける平滑化のカーネル作成
