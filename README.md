@@ -11,3 +11,6 @@ bigendian_data=C:/research/bigendian_data/
 root_dir=C:/research/
 
 を記述して下さい
+
+
+./research/snap に変換前のデータ入れてますが、githubには重いのでアップしてません
