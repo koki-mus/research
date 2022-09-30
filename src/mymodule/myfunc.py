@@ -3,7 +3,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import cv2
+import os
+from dotenv import load_dotenv
+load_dotenv()
+data_dir = os.environ["bigendian_data"]
+imgout = os.environ["imgout"]
+root_dir = os.environ["root_dir"]
+snaps_dir = os.environ["snaps_dir"]
+print(data_dir)
 
+def gen_snap_path(target, para, job):
+    return f"{snaps_dir}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
 #データのロード
 def load(filename, z=1):
     """
@@ -13,9 +23,10 @@ def load(filename, z=1):
     f = open(filename,mode='rb')
     #:525825でz方向の1個目だけ(xy平面一つ)とる。reshapeでx,yの整形
     if z == 1:
-        data = np.fromfile(f, dtype='f',sep='').reshape(513,1025)
+        print(np.fromfile(f, dtype='f',sep='').shape)
+        data = np.fromfile(f, dtype='f',sep='').reshape(1025,513)
     elif z == 3:
-        data = np.fromfile(f, dtype='f',sep='')[:525825].reshape(513,1025)
+        data = np.fromfile(f, dtype='f',sep='')[:525825].reshape(1025,513)
     f.close()
     return data
 
@@ -36,6 +47,7 @@ def show(data: np.array, imgname=False, bar_range=None):
         sns.heatmap(data)
     else:
         sns.heatmap(data, vmin=bar_range[0], vmax=bar_range[1])
+
     if imgname:
         plt.savefig(f"{imgname}")
 

@@ -266,24 +266,43 @@ int main(int argc, char **argv)
 				savedata(coord3, kzwidth, "coordz");
 			}
 
-			sprintf(outfile, "density%08d", loop);
+			sprintf(outfile, "density/%02d/density.%02d.%02d", jb,njb,jb);
 			savedata(var1, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "pressure%08d", loop);
+			sprintf(outfile, "pressure/%02d/pressure.%02d.%02d", jb,njb,jb);
 			savedata(var2, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "velocityx%08d", loop);
+			sprintf(outfile, "velocityx/%02d/velocityx.%02d.%02d", jb,njb,jb);
 			savedata(var3, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "velocityy%08d", loop);
+			sprintf(outfile, "velocityy/%02d/velocityy.%02d.%02d", jb,njb,jb);
 			savedata(var4, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "velocityz%08d", loop);
+			sprintf(outfile, "velocityz/%02d/velocityz.%02d.%02d", jb,njb,jb);
 			savedata(var5, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "magfieldx%08d", loop);
+			sprintf(outfile, "magfieldx/%02d/magfieldx.%02d.%02d", jb,njb,jb);
 			savedata(var6, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "magfieldy%08d", loop);
+			sprintf(outfile, "magfieldy/%02d/magfieldy.%02d.%02d", jb,njb,jb);
 			savedata(var7, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "magfieldz%08d", loop);
+			sprintf(outfile, "magfieldz/%02d/magfieldz.%02d.%02d", jb,njb,jb);
 			savedata(var8, ixsize * iysize * kzwidth, outfile);
-			sprintf(outfile, "enstrophy%08d", loop);
+			sprintf(outfile, "enstrophy/%02d/enstrophy.%02d.%02d", jb,njb,jb);
 			savedata(var9, ixsize * iysize * kzwidth, outfile);
+
+			// sprintf(outfile, "density%08d", loop);
+			// savedata(var1, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "pressure%08d", loop);
+			// savedata(var2, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "velocityx%08d", loop);
+			// savedata(var3, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "velocityy%08d", loop);
+			// savedata(var4, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "velocityz%08d", loop);
+			// savedata(var5, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "magfieldx%08d", loop);
+			// savedata(var6, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "magfieldy%08d", loop);
+			// savedata(var7, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "magfieldz%08d", loop);
+			// savedata(var8, ixsize * iysize * kzwidth, outfile);
+			// sprintf(outfile, "enstrophy%08d", loop);
+			// savedata(var9, ixsize * iysize * kzwidth, outfile);
 
 			/*
 			!  columns for  NS3DComp,        XMHD3DComp::
