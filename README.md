@@ -3,9 +3,9 @@
 
 bigendian_data={データの絶対パス}
 
-imgout={データの出力先絶対パス}
+imgout={画像の出力先絶対パス}
 
-root_dir={pythonプログラムのルートにしたいパス}
+root_dir={.reserch/のパス}
 
 snaps_dir={スナップショットのパス}
 
