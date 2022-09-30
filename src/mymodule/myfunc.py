@@ -37,7 +37,7 @@ def load_bigendian(filename):
     """
     f = open(filename,mode='rb')
     #>fはbig endianのfloat型。:525825でz方向の1個目だけ(xy平面一つ)とる。reshapeでx,yの整形
-    data = np.fromfile(f, dtype='>f',sep='')[:525825].reshape(513,1025)
+    data = np.fromfile(f, dtype='>f',sep='')[:525825].reshape(1025,513)
     f.close()
     return data
 #ヒートマップの生成と保存
