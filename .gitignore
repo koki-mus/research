@@ -9,6 +9,7 @@ bigendian_data/
 imgout/
 __pycache__/
 private/
+research_kawa.code-workspace
 research.code-workspace
 *.log
 etc/
