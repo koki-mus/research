@@ -1,8 +1,6 @@
 # 環境変数の準備
 はじめに ".env" というファイルを作り
 
-bigendian_data={データの絶対パス}
-
 imgout={画像の出力先絶対パス}
 
 root_dir={.reserch/のパス}
