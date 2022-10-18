@@ -11,6 +11,7 @@ __pycache__/
 private/
 research_kawa.code-workspace
 research.code-workspace
+*.code-workspace
 *.log
 etc/
 snap/
