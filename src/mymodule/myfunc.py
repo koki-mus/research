@@ -6,10 +6,12 @@ import cv2
 import os
 from dotenv import load_dotenv
 load_dotenv()
-# data_dir = os.environ["bigendian_data"]
+
+
 imgout = os.environ["imgout"]
 root_dir = os.environ["root_dir"]
 snaps_dir = os.environ["snaps_dir"]
+
 
 def gen_snap_path(target, para, job):
     return f"{snaps_dir}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
