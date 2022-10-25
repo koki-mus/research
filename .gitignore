@@ -15,6 +15,7 @@ research.code-workspace
 *.log
 etc/
 snap/
+snap*/
 data/
 .png
 .jpg
