@@ -159,3 +159,10 @@ a = np.array([[0,1,2,3],[0,4,5,6],[0,7,8,9]])
 e = np.array([1,0,0])
 mylist = [[j *e for j in i ] for i in a]
 """
+from scipy import interpolate
+def array_interpolation(data:np.array,newxy, kind ='cubic'):
+    oldy, oldx = data.shape
+    X,Y = np.meshgrid(oldx,oldy)
+    f = interpolate.interp2d(X, Y, data, kind=kind)
+    znew = f(newxy[0], newxy[1])
+    return znew
