@@ -12,6 +12,23 @@ imgout = os.environ["imgout"]
 root_dir = os.environ["root_dir"]
 snaps_dir = os.environ["snaps_dir"]
 
+def AVSlat2bilat(dataname, xy):
+    dataname = str(dataname)
+    xy = np.array(xy)
+    bixy = np.array([513,1025])
+    if dataname == "77":
+        start = np.array([40,120])
+        end = np.array([4759,879])
+    else:
+        print("このデータにはまだ対応していない。AVSで有効な座標を調べよ")
+        return None
+    leng = end - start + 1
+    res = [0,0]
+    for i in [0,1]:
+        res[i] = (xy[i] - start[i]) * ( bixy[i] / leng[i])
+    return res
+        
+
 
 def gen_snap_path(target, para, job):
     return f"{snaps_dir}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
