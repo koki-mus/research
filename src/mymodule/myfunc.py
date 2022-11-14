@@ -10,7 +10,7 @@ load_dotenv()
 
 imgout = os.environ["imgout"]
 root_dir = os.environ["root_dir"]
-snaps_dir = os.environ["snaps_dir"]
+
 
 def AVSlat2bilat(dataname, xy):
     dataname = str(dataname)
@@ -30,10 +30,14 @@ def AVSlat2bilat(dataname, xy):
         
 
 
-def gen_snap_path(target, para, job):
-    return f"{snaps_dir}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
+def gen_snap_path(target, para, job, dataset=49):
+    if dataset == 49:
+        snap_path = root_dir + "snap/snap49/"
+    elif dataset == 77:
+        snap_path = root_dir + "snap/snap77/"
+    return f"{snap_path}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
 #データのロード
-def load(filename, z=1):
+def load(filename, z=3):
     """
     little endianのデータの読み込み。z=1でz方向が一層だけのデータを
     z=3でz方向が3のデータを1層だけ読み込む
