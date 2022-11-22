@@ -188,6 +188,8 @@ def array_interpolation(data:np.array,newxy, kind ='cubic'):
     f = interpolate.interp2d(X, Y, data, kind=kind)
     znew = f(newxy[0], newxy[1])
     return znew
-
+import glob
 def ohno_stream(xfile:str, yfile:str, outname:str):
-    subprocess.run([f"{root_dir}src/mymodule/streamLines.exe", f"{xfile}", "f{yfile}",f"{outname}"])
+    print(glob.glob("./*"))
+    res = subprocess.run([f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", f"{xfile}", f"{yfile}",f"{outname}"])
+    return res
