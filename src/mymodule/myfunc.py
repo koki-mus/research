@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import cv2
 import os
+import subprocess
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -187,3 +188,6 @@ def array_interpolation(data:np.array,newxy, kind ='cubic'):
     f = interpolate.interp2d(X, Y, data, kind=kind)
     znew = f(newxy[0], newxy[1])
     return znew
+
+def ohno_stream(xfile:str, yfile:str, outname:str):
+    subprocess.run([f"{root_dir}src/mymodule/streamLines.exe", f"{xfile}", "f{yfile}",f"{outname}"])
