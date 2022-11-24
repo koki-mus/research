@@ -1,6 +1,8 @@
 #ifndef _SLINES_MODULE
 #define _SLINES_MODULE
 
+using namespace std;
+
 class StreamLine {
     bool debug;
     int pic_w, pic_h, mag;

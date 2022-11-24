@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
 
 #include "streamLines.h"
 
@@ -29,7 +29,8 @@ void StreamLine :: writeBmp(char *filename)
 
   width = pic_w;  height = pic_h;
   filesize = (width*3 + width%4)*height+OFFSET;
-  imageUC = (char *)malloc(filesize);
+  //imageUC = (char *)malloc(filesize);
+  imageUC = new char[filesize];
   /* BMP Header*/
   /* ---------File Header --------- */
      imageUC[0] = 'B'; imageUC[1] = 'M'; 
@@ -104,7 +105,7 @@ void StreamLine :: writeBmp(char *filename)
   fwrite(imageUC, 1, filesize, fp);
   fclose(fp);
 
-  free(imageUC);
+  delete [] imageUC;
   return;
 }
 
@@ -170,14 +171,14 @@ void StreamLine :: setStreamParam(double div, int rs){
 void StreamLine :: allocMem(){
  int x = dat_size[0];
  int y = dat_size[1];
- fx = (float *)malloc(sizeof(float)*x*y);
- fy = (float *)malloc(sizeof(float)*x*y);
- rgb = (float *)malloc(sizeof(float)*pic_w*pic_h*3);
+ fx = new float[x*y];
+ fy = new float[x*y];
+ rgb = new float[pic_w*pic_h*3];
 }
 
 void StreamLine :: freeMem(){
- free(fx); free(fy);
- free(rgb);
+ delete [] fx; delete [] fy;
+ delete [] rgb;
 }
 
 /*
@@ -237,8 +238,8 @@ StreamLine::project_lines2plane (double *x, float *color)
 
   int pixel_x, pixel_y;
 
-  pixel_x = (int)(point[0]/axis_delta[0])*mag;
-  pixel_y = (int)(point[1]/axis_delta[0])*mag;
+  pixel_x = (int)(point[0]/axis_delta[0]*mag);
+  pixel_y = (int)(point[1]/axis_delta[0]*mag);
 
   if(pixel_x < 0 || pixel_x >= pic_w)
     {
