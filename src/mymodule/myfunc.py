@@ -46,7 +46,7 @@ def load(filename, z=3):
     f = open(filename,mode='rb')
     #:525825でz方向の1個目だけ(xy平面一つ)とる。reshapeでx,yの整形
     if z == 1:
-        print(np.fromfile(f, dtype='f',sep='').shape)
+        # print(np.fromfile(f, dtype='f',sep='').shape)
         data = np.fromfile(f, dtype='f',sep='').reshape(1025,513)
     elif z == 3:
         data = np.fromfile(f, dtype='f',sep='')[:525825].reshape(1025,513)
@@ -90,8 +90,8 @@ def convolute(data: np.array, carnel: np.array, padding=0, stride=1):
 
     result_width = int((data.shape[1] + 2*padding - carnel.shape[1]) / stride + 1)
     result_height = int((data.shape[0] + 2*padding - carnel.shape[0]) / stride + 1)
-    print("result   Y,X:",result_height,result_width)
-    print("original Y,X:",data.shape)
+    # print("result   Y,X:",result_height,result_width)
+    # print("original Y,X:",data.shape)
     def loop_calc():
         def calc(array):
 
@@ -129,8 +129,8 @@ def diff(x, h):
     精度低めの普通の微分。誤差:h**2
     """
     res = x[2:] - x[:-2]
-    print(x[1:])
-    print(x[:-1])
+    # print(x[1:])
+    # print(x[:-1])
     return res/(2*h)
 def diff4(x, h):
     """
@@ -181,15 +181,65 @@ a = np.array([[0,1,2,3],[0,4,5,6],[0,7,8,9]])
 e = np.array([1,0,0])
 mylist = [[j *e for j in i ] for i in a]
 """
-from scipy import interpolate
-def array_interpolation(data:np.array,newxy, kind ='cubic'):
-    oldy, oldx = data.shape
-    X,Y = np.meshgrid(oldx,oldy)
+from scipy import interpolate#x方向少なすぎるのか上手く動かない、linearは縦線入ってまう
+def im_interpolate(data, gridx, gridy, kind = "cubic"):
+    XLEN = 513
+    YLEN = 1025
+    dx = 2*np.pi/XLEN
+    dy = 2/YLEN
+    datay, datax = data.shape
+    x = np.arange(0, datax*dx, dx)
+    y = np.arange(0, datay*dy, dy)
+    X,Y = np.meshgrid(x, y)
     f = interpolate.interp2d(X, Y, data, kind=kind)
-    znew = f(newxy[0], newxy[1])
+    xnew = np.linspace(0, datax*dx, gridx)
+    ynew = np.linspace(0, datay*dy, gridy)
+    znew = f(xnew, ynew)
+    # xnew_,ynew_=np.meshgrid(xnew, ynew)
     return znew
-import glob
-def ohno_stream(xfile:str, yfile:str, outname:str):
-    print(glob.glob("./*"))
-    res = subprocess.run([f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", f"{xfile}", f"{yfile}",f"{outname}"])
+
+from struct import pack
+import random
+def ohno_stream(xfile:str, yfile:str, outname:str, x = False, y = False):
+    command = [f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", xfile, yfile, outname]
+    if xfile[-3:] == "npy":
+        xdata = np.load(xfile)
+        ydata = np.load(yfile)
+        command += list(map(str, list(reversed(xdata.shape))))
+        #npy1次元のファイルを作って無理やり読み込ます。そして消す。名前はランダムにして
+        xtempfile = f"xtemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        f = open(xtempfile, "ab")
+        for val in list(xdata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
+            b = pack('f', val)
+            f.write(b)
+        f.close()
+        ytempfile = f"ytemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        f = open(ytempfile, "ab")
+        for val in list(ydata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
+            b = pack('f', val)
+            f.write(b)
+        f.close()
+        command[1], command[2] = xtempfile, ytempfile
+        res = subprocess.run(command)
+        os.remove(xtempfile)
+        os.remove(ytempfile)
+    elif (x and y) == True:
+        command += list(map(str, [x,y]))
+        res = subprocess.run(command)
+    else:
+        res = subprocess.run(command)
+    print(command)
     return res
+
+def sort_paths(pathlist, paraloc=[-9,-8], jobloc=[-6,-5]):
+    """
+    pathlistはglob等で取得したlist。
+    locはそれぞれのpath上での位置。
+    pathlistをpara,jobでソートして返す。
+    """
+    pjp = [{"path": path,
+     "job": int("".join([path[i] for i in jobloc])),
+     "para": int("".join([path[i] for i in paraloc]))} for path in pathlist]
+    pjp2 = sorted(pjp, key = lambda x: (x["para"]))
+    pjp3 = sorted(pjp2, key = lambda x: (x["job"]))
+    return [x["path"] for x in pjp3]
