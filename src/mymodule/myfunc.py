@@ -243,3 +243,21 @@ def sort_paths(pathlist, paraloc=[-9,-8], jobloc=[-6,-5]):
     pjp2 = sorted(pjp, key = lambda x: (x["para"]))
     pjp3 = sorted(pjp2, key = lambda x: (x["job"]))
     return [x["path"] for x in pjp3]
+from PIL import Image
+def li2image(lic_result, xzoom=3, yzoom=1):
+    shape = lic_result.shape
+    im = np.array(lic_result*255, dtype="uint8")
+    im = Image.fromarray(im, mode="L")
+    
+    im = im.resize([shape[1]*xzoom,shape[0]*yzoom], resample=Image.LANCZOS)#######
+    # im.show()
+    # im.save(out)
+
+def resize(array, yx = [1025, 513]):
+    if list(array.shape) == list(yx):
+        return array
+    im = Image.fromarray(im, mode="L")
+    im = im.resize([yx[0], yx[1]], resample=Image.LANCZOS)#######
+    return np.array(im)
+
+    
