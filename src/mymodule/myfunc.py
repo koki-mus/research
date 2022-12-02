@@ -43,6 +43,8 @@ def load(filename, z=3):
     little endianのデータの読み込み。z=1でz方向が一層だけのデータを
     z=3でz方向が3のデータを1層だけ読み込む
     """
+    if filename[-3:] == "npy":
+        return np.load(filename)
     f = open(filename,mode='rb')
     #:525825でz方向の1個目だけ(xy平面一つ)とる。reshapeでx,yの整形
     if z == 1:
@@ -201,6 +203,37 @@ def im_interpolate(data, gridx, gridy, kind = "cubic"):
 from struct import pack
 import random
 def ohno_stream(xfile:str, yfile:str, outname:str, x = False, y = False):
+    command = [f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", xfile, yfile, outname]
+    if xfile[-3:] == "npy":
+        xdata = np.load(xfile)
+        ydata = np.load(yfile)
+        command += list(map(str, list(reversed(xdata.shape))))
+        #npy1次元のファイルを作って無理やり読み込ます。そして消す。名前はランダムにして
+        xtempfile = f"xtemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        f = open(xtempfile, "ab")
+        for val in list(xdata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
+            b = pack('f', val)
+            f.write(b)
+        f.close()
+        ytempfile = f"ytemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        f = open(ytempfile, "ab")
+        for val in list(ydata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
+            b = pack('f', val)
+            f.write(b)
+        f.close()
+        command[1], command[2] = xtempfile, ytempfile
+        res = subprocess.run(command)
+        os.remove(xtempfile)
+        os.remove(ytempfile)
+    elif (x and y) == True:
+        command += list(map(str, [x,y]))
+        res = subprocess.run(command)
+    else:
+        res = subprocess.run(command)
+    print(command)
+    return res
+
+def ohno_lic(xfile:str, yfile:str, outname:str, x = False, y = False):
     command = [f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", xfile, yfile, outname]
     if xfile[-3:] == "npy":
         xdata = np.load(xfile)
