@@ -23,13 +23,10 @@ int mag = 7;
 LineIntegralConv *lic;
 
 int main(int argc, char **argv){
- char xfile[] = "magfield1";
- char yfile[] = "magfield2";
- char picfile[] = "lictest.bmp";
-//  
 //  char xfile[] = "magfield1";
 //  char yfile[] = "magfield2";
-//  char picfile[] = "test.bmp";
+//  char picfile[] = "lictest.bmp";
+//  
  if (argc <= 3)
  {  return 0;}
 char *xfile = argv[1];

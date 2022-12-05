@@ -234,7 +234,7 @@ def ohno_stream(xfile:str, yfile:str, outname:str, x = False, y = False):
     return res
 
 def ohno_lic(xfile:str, yfile:str, outname:str, x = False, y = False):
-    command = [f"{root_dir}src/mymodule/StreamLines/FieldLines.exe", xfile, yfile, outname]
+    command = [f"{root_dir}src/mymodule/LIC/LIC.exe", xfile, yfile, outname]
     if xfile[-3:] == "npy":
         xdata = np.load(xfile)
         ydata = np.load(yfile)
