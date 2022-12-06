@@ -28,6 +28,20 @@ def AVSlat2bilat(dataname, xy):
     for i in [0,1]:
         res[i] = (xy[i] - start[i]) * ( bixy[i] / leng[i])
     return res
+def LIClat2bilat(xy, half=True):
+    xy = np.array(xy)
+    if half:
+        bixy = np.array([257,1025])
+    else:
+        bixy = np.array([513,1025])
+
+    start = np.array([0,0])
+    end = np.array([1799,570])
+    leng = end - start + 1
+    res = [0,0]
+    for i in [0,1]:
+        res[i] = (xy[i] - start[i]) * ( bixy[i] / leng[i])
+    return res
         
 
 
@@ -209,13 +223,13 @@ def ohno_stream(xfile:str, yfile:str, outname:str, x = False, y = False):
         ydata = np.load(yfile)
         command += list(map(str, list(reversed(xdata.shape))))
         #npy1次元のファイルを作って無理やり読み込ます。そして消す。名前はランダムにして
-        xtempfile = f"xtemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        xtempfile = f"xtemp_ohnostrm_reading{random.randint(10000, 99999)}"
         f = open(xtempfile, "ab")
         for val in list(xdata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
             b = pack('f', val)
             f.write(b)
         f.close()
-        ytempfile = f"ytemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        ytempfile = f"ytemp_ohnostrm_reading{random.randint(10000, 99999)}"
         f = open(ytempfile, "ab")
         for val in list(ydata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
             b = pack('f', val)
@@ -240,13 +254,13 @@ def ohno_lic(xfile:str, yfile:str, outname:str, x = False, y = False):
         ydata = np.load(yfile)
         command += list(map(str, list(reversed(xdata.shape))))
         #npy1次元のファイルを作って無理やり読み込ます。そして消す。名前はランダムにして
-        xtempfile = f"xtemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        xtempfile = f"xtemp_ohnostrm_reading{random.randint(10000, 99999)}"
         f = open(xtempfile, "ab")
         for val in list(xdata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
             b = pack('f', val)
             f.write(b)
         f.close()
-        ytempfile = f"ytemp_ohnostrm_reading{random.randint(1000, 9999)}"
+        ytempfile = f"ytemp_ohnostrm_reading{random.randint(10000, 99999)}"
         f = open(ytempfile, "ab")
         for val in list(ydata.flat)*3:#*3は元のデータがz軸方向に3重なっているのを表現
             b = pack('f', val)
