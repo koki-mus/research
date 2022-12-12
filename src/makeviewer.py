@@ -2,8 +2,9 @@
 import glob
 from mymodule import myfunc as mf
 def main():
-    outname = "lic_viewer49.html"
-    paths = glob.glob("./snap49/*bmp")
+    dataset = input()
+    outname = f"lic_viewer{dataset}.html"
+    paths = glob.glob(f"./snap{dataset}/*bmp")
     paths = mf.sort_paths(paths)
     part1 = '<!DOCTYPE html>\n\
     <html>\n\
@@ -18,12 +19,12 @@ def main():
             <img id="output" src=""><br><br>\n\
         </div>\n\
             <div class="navi">\n\
-                <input type="button" value=" 100進む" onclick="move(-100);"/>\n\
-            <input type="button" value=" 10進む" onclick="move(-10);"/>\n\
-            <input type="button" value=" 1進む" onclick="move(-1);"/>\n\
-            <input type="button" value="1戻る" onclick="move(1);"/>\n\
-            <input type="button" value="10戻る" onclick="move(10);"/>\n\
-            <input type="button" value="100戻る" onclick="move(100);"/>\n\
+                <input type="button" value=" 100戻る" onclick="move(-100);"/>\n\
+            <input type="button" value=" 10戻る" onclick="move(-10);"/>\n\
+            <input type="button" value=" 1戻る" onclick="move(-1);"/>\n\
+            <input type="button" value="1進む" onclick="move(1);"/>\n\
+            <input type="button" value="10進む" onclick="move(10);"/>\n\
+            <input type="button" value="100進む" onclick="move(100);"/>\n\
         </div>\n\
         <br/>\n\
         <p class="discribe">x方向の幅</p><input id="dxinput" type="text" name="text" value="30">\n\
