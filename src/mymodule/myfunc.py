@@ -50,7 +50,13 @@ def gen_snap_path(target, para, job, dataset=49):
         snap_path = root_dir + "snap/snap49/"
     elif dataset == 77:
         snap_path = root_dir + "snap/snap77/"
-    return f"{snap_path}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
+    elif dataset ==497:
+        snap_path = root_dir + "snap/snap497/"
+    res = f"{snap_path}{target}/{'{0:02d}'.format(job)}/{target}.{'{0:02d}'.format(para)}.{'{0:02d}'.format(job)}"
+    if os.path.exists(res):
+        return res
+    else:
+        return None
 #データのロード
 def load(filename, z=3):
     """
