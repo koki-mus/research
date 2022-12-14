@@ -13,12 +13,12 @@ def main():
     </head>\n\
     <body>\n\
         <div class="navi">\n\
-                <input type="button" value=" 100戻る" onclick="move(-100);"/>\n\
-            <input type="button" value=" 10戻る" onclick="move(-10);"/>\n\
-            <input type="button" value=" 1戻る" onclick="move(-1);"/>\n\
-            <input type="button" value="1進む" onclick="move(1);"/>\n\
-            <input type="button" value="10進む" onclick="move(10);"/>\n\
-            <input type="button" value="100進む" onclick="move(100);"/>\n\
+                <input type="button" value=" 100戻る(A)" onclick="move(-100);"/>\n\
+            <input type="button" value=" 10戻る(S)" onclick="move(-10);"/>\n\
+            <input type="button" value=" 1戻る(D)" onclick="move(-1);"/>\n\
+            <input type="button" value="1進む(F)" onclick="move(1);"/>\n\
+            <input type="button" value="10進む(G)" onclick="move(10);"/>\n\
+            <input type="button" value="100進む(H)" onclick="move(100);"/>\n\
         </div>\n\
         <p id="currentpath"></p>\n\
         <div class="imgcvs">\n\
@@ -145,6 +145,23 @@ def main():
         box2.addEventListener("input", drawbox);\n\
         box3.addEventListener("input", drawbox);\n\
         box4.addEventListener("input", drawbox);\n\
+                    document.addEventListener("keypress", keypress_ivent);\n\
+        function keypress_ivent(e) {\n\
+            if(e.key === "a" || e.key === "A"){\n\
+                move(-100)\n\
+            }else if(e.key === "s" || e.key === "S"){\n\
+                move(-10)\n\
+            }else if(e.key === "d" || e.key === "D"){\n\
+                move(-1)\n\
+            }else if(e.key === "f" || e.key === "F"){\n\
+                move(1)\n\
+            }else if(e.key === "g" || e.key === "G"){\n\
+                move(10)\n\
+            }else if(e.key === "h" || e.key === "H"){\n\
+                move(100)\n\
+            }\n\
+            return false; \n\
+        }\n\
       </script>\n\
       <style>\n\
         body{\n\
@@ -154,7 +171,7 @@ def main():
         }\n\
         .navi input{\n\
             display: inline;\n\
-            width: 65px;\n\
+            width: 74px;\n\
             height: 30px;\n\
             margin: 0px;\n\
             padding: 0px;\n\
