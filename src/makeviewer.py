@@ -2,7 +2,7 @@
 import glob
 from mymodule import myfunc as mf
 def main():
-    dataset = input()
+    dataset = input("which dataset:")
     outname = f"lic_viewer{dataset}.html"
     paths = glob.glob(f"./snap{dataset}/*bmp")
     paths = mf.sort_paths(paths)
@@ -12,13 +12,7 @@ def main():
         <title>viewer</title>\n\
     </head>\n\
     <body>\n\
-        <p id="currentpath"></p>\n\
-        <div class="imgcvs">\n\
-            <canvas class="cv" id="cvx"></canvas>\n\
-            <canvas class="cv" id="cvy"></canvas>\n\
-            <img id="output" src=""><br><br>\n\
-        </div>\n\
-            <div class="navi">\n\
+        <div class="navi">\n\
                 <input type="button" value=" 100戻る" onclick="move(-100);"/>\n\
             <input type="button" value=" 10戻る" onclick="move(-10);"/>\n\
             <input type="button" value=" 1戻る" onclick="move(-1);"/>\n\
@@ -26,10 +20,22 @@ def main():
             <input type="button" value="10進む" onclick="move(10);"/>\n\
             <input type="button" value="100進む" onclick="move(100);"/>\n\
         </div>\n\
+        <p id="currentpath"></p>\n\
+        <div class="imgcvs">\n\
+            <canvas class="cv" id="cvx"></canvas>\n\
+            <canvas class="cv" id="cvy"></canvas>\n\
+            <canvas class="cv" id="box"></canvas>\n\
+            <img id="output" src=""><br><br>\n\
+        </div>\n\
         <br/>\n\
-        <p class="discribe">x方向の幅</p><input id="dxinput" type="text" name="text" value="30">\n\
-        <p class="discribe">y方向の幅</p><input id="dyinput" type="text" name="text" value="30">\n\
+        <p class="discribe">グリッド: x方向の幅</p><input class="textinput" id="dxinput" type="text" name="text" value="30">\n\
+        <p class="discribe">y方向の幅</p><input class="textinput" id="dyinput" type="text" name="text" value="30">\n\
         <p>元データのピクセルに準拠</p>\n\
+        <p class="discribe">範囲の描画</p>\n\
+        <p class="discribe">始点X</p><input class="boxinput textinput" id="box1" type="text" value="30">\n\
+        <p class="discribe">始点Y</p><input class="boxinput textinput" id="box2" type="text"value="30">\n\
+        <p class="discribe">終点X</p><input class="boxinput textinput" id="box3" type="text"value="100">\n\
+        <p class="discribe">終点Y</p><input class="boxinput textinput" id="box4" type="text" value="100">\n\
 \n\
     </body>\n\
     </html>\n\
@@ -53,14 +59,18 @@ def main():
         }\n\
         var cvsx = document.getElementById("cvx");\n\
         var cvsy = document.getElementById("cvy");\n\
+        var boxs = document.getElementById("box")\n\
         const imgXlen = 1799;\n\
         const imgYlen = 570;\n\
         cvsx.setAttribute( "width" , imgXlen);\n\
         cvsx.setAttribute( "height" , imgYlen);\n\
         cvsy.setAttribute( "width" , imgXlen);\n\
         cvsy.setAttribute( "height" , imgYlen);\n\
+        boxs.setAttribute( "width" , imgXlen);\n\
+        boxs.setAttribute( "height" , imgYlen);\n\
         var ctxx = cvsx.getContext("2d");\n\
         var ctxy = cvsy.getContext("2d");\n\
+        var boxct = boxs.getContext("2d");\n\
         function drawlinex(startx,starty,endx,endy){\n\
             ctxx.beginPath();\n\
             ctxx.lineWidth = 0.8;\n\
@@ -79,12 +89,6 @@ def main():
         }\n\
         const orgx = 257;\n\
         const orgy = 1025;\n\
-\n\
-        // dy = 60*imgYlen/orgy;\n\
-        // for (let index = 0; index*dy < imgYlen; index++) {\n\
-        //     drawline(0,index*dy, imgXlen,index*dy)\n\
-        //     console.log(index*dy)\n\
-        // }\n\
         const inputx = document.getElementById("dxinput");\n\
         function drawglidx(){\n\
             ctxx.clearRect(0,0,imgXlen,imgYlen)\n\
@@ -95,7 +99,6 @@ def main():
             dx = inputdx*imgXlen/orgx\n\
             for (let index = 0; index*dx < imgXlen; index++) {\n\
                 drawlinex(index*dx, 0,index*dx, imgXlen)\n\
-                console.log(index*dx)\n\
             }\n\
         }\n\
 \n\
@@ -104,18 +107,44 @@ def main():
             ctxy.clearRect(0,0,imgXlen,imgYlen)\n\
             inputdy = Number(document.getElementById("dyinput").value);\n\
             if (inputdy <0.2) {\n\
-                return 0\n\
+                return 0;\n\
             }\n\
-            dy = inputdy*imgYlen/orgy\n\
+            dy = inputdy*imgYlen/orgy;\n\
             for (let index = 0; index*dy < imgYlen; index++) {\n\
-            drawliney(0,index*dy, imgXlen,index*dy)\n\
-            console.log(index*dy)\n\
+            drawliney(0,index*dy, imgXlen,index*dy);\n\
         }\n\
         }\n\
         drawglidx()\n\
         drawglidy()\n\
         inputx.addEventListener("input", drawglidx);\n\
         inputy.addEventListener("input", drawglidy);\n\
+\n\
+        const box1 = document.getElementById("box1");\n\
+        const box2 = document.getElementById("box2");\n\
+        const box3 = document.getElementById("box3");\n\
+        const box4 = document.getElementById("box4");\n\
+        function drawbox(){\n\
+            boxct.clearRect(0,0,imgXlen,imgYlen)\n\
+            boxct.lineWidth = 2;\n\
+            boxct.strokeStyle = "rgba(255,64,64,1)"\n\
+            var num1 = Number(box1.value)*imgXlen/orgx\n\
+            var num2 = Number(box2.value)*imgYlen/orgy\n\
+            var num3 = Number(box3.value)*imgXlen/orgx\n\
+            var num4 = Number(box4.value)*imgYlen/orgy\n\
+            console.log(num1)\n\
+            boxct.beginPath();\n\
+            boxct.moveTo(num1, num2);\n\
+            boxct.lineTo(num3, num2);\n\
+            boxct.lineTo(num3, num4);\n\
+            boxct.lineTo(num1, num4);\n\
+            boxct.closePath()\n\
+            boxct.stroke()\n\
+        }\n\
+\n\
+        box1.addEventListener("input", drawbox);\n\
+        box2.addEventListener("input", drawbox);\n\
+        box3.addEventListener("input", drawbox);\n\
+        box4.addEventListener("input", drawbox);\n\
       </script>\n\
       <style>\n\
         body{\n\
@@ -125,7 +154,16 @@ def main():
         }\n\
         .navi input{\n\
             display: inline;\n\
-            width: 65px\n\
+            width: 65px;\n\
+            height: 30px;\n\
+            margin: 0px;\n\
+            padding: 0px;\n\
+        }\n\
+        .navi{\n\
+            position: fixed;\n\
+            z-index: 1;\n\
+            height: 50px;\n\
+            top: 10px;\n\
         }\n\
         .cv{\n\
             width:1799px;\n\
@@ -135,9 +173,14 @@ def main():
         .img{\n\
             width: 1799px;\n\
             height: 570px;\n\
+            position: absolute;\n\
         }\n\
         .discribe{\n\
             display: inline;\n\
+        }\n\
+        .textinput{\n\
+            width: 30px;\n\
+            text-align: right;\n\
         }\n\
       </style>\n\
     '
