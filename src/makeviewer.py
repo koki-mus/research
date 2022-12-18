@@ -241,6 +241,9 @@ def main():
         }\n\
         #output{\n\
             z-index: 999;\n\
+            user-select: none;\n\
+            -webkit-user-select: none;\n\
+            -ms-user-select: none;\n\
         }\n\
         .navi input{\n\
             display: inline;\n\
