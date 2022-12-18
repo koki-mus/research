@@ -184,9 +184,10 @@ def main():
             boxct2.lineTo(locnumx2, locnumy2+rangenumy);\n\
             boxct2.closePath()\n\
             boxct2.stroke()\n\
-            console.log("yellow box"\n,roundDecimal(locnumx2,0),\n\
-            roundDecimal(locnumy2,0),\n\
-            roundDecimal(locnumx2+rangenumy,0),\n\
+            console.log("yellow box\\n",\n\
+            roundDecimal(locnumx2,0)+","+\n\
+            roundDecimal(locnumy2,0)+","+\n\
+            roundDecimal(locnumx2+rangenumy,0)+","+\n\
             roundDecimal(locnumy2+rangenumy,0))\n\
         }\n\
         locx.addEventListener("input", drawbox2);\n\
