@@ -1,5 +1,5 @@
 # 環境変数の準備
-はじめに ".env" というファイルを作り
+はじめに "src/.env" というファイルを作り
 
 imgout={画像の出力先絶対パス}
 
@@ -8,19 +8,19 @@ root_dir={.reserch/のパス}
 snaps_dir={スナップショットのパス}
 
 ## 例)
-
-imgout=C:/research/imgout/
-
-bigendian_data=C:/research/bigendian_data/
-
 root_dir=C:/research/
-
-snaps_dir=C:/research/Snapshots/
-
 を記述して下さい
 
 
 ./research/snap や /dataに変換前のデータ入れてますが、githubには重いのでアップしてません
+
+# データ入力補助
+src/writer.py を実行しながら、imgout/ohnolic/viewer*.htmlを開く。pキーでwriter.pyにpostし、任意のファイルに黄色いボックスの情報を書き加える。
+エラーはまだ中途、リコネクション、ｘ、Ｏ点の情報も加えるつもり。
+
+
+htmlの作成は。./imgout/ohnolicで
+../../src/makeviewer2.pyを実行
 
 # ディレクトリ構造
 research/
