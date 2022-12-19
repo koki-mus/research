@@ -22,10 +22,10 @@ def writedata():
             dataset, para, job = req['snappath'][-12:-10], req['snappath'][-9:-7], req['snappath'][-6:-4] 
             centerx = req["locnumx"]
             centery = req["locnumy"]
-            xlow = req["locnumx"]
-            xup = int(req["locnumx"]) + int(req["rangenumx"])
-            ylow = req["locnumy"]
-            yup = int(req["locnumy"]) + int(req["rangenumy"])
+            xlow = req["locnumx2"]
+            xup = int(req["locnumx2"]) + int(req["rangenumx"])
+            ylow = req["locnumy2"]
+            yup = int(req["locnumy2"]) + int(req["rangenumy"])
             doc = f"{req['snappath']},{dataset},{para},{job},{centerx},{centery},{xlow},{xup},{ylow},{yup}\n"
             global predoc
             if int(req["rangenumx"]) == 0 or int(req["rangenumy"]) == 0:
