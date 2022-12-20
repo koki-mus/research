@@ -18,13 +18,14 @@ load_dotenv()
 root_dir = os.environ["root_dir"]
 
 #selfついてるのとついてないのとでバグあるかも
-
+#labelのcsvにリコネクションしてるかどうかを0,1で表す列がいる。
+#その列がない場合にはあとJUDGE_COLUMNが使えなくなるので、列を作ってからMLに突っ込む
 class ML:
     def __init__(self, ALTIMAGE0, ALTIMAGE1, LABEL_SOURCE, JUDGE_COLUMN, IMGSHAPE, DO_PCA = False, dilute = False) -> None:
         self.ALTIMAGES0 = root_dir + ALTIMAGE0
         self.ALTIMAGES1 = root_dir + +ALTIMAGE1
-        self.LABEL_SOURCE = LABEL_SOURCE
-        self.JUDGE_CCOLUMN = JUDGE_COLUMN
+        self.LABEL_SOURCE = LABEL_SOURCE#
+        self.JUDGE_CCOLUMN = JUDGE_COLUMN#is_reconnecting列(0,1)
         self.IMGSHAPE = IMGSHAPE#出来れば画像サイズはすべて同じで合ってほしい。違うサイズが混じる場合は最も多いサイズを指定すること
         self.DO_PCA = DO_PCA
         # def compress(array, LEVEL=1):
@@ -220,4 +221,5 @@ class ML:
         # 精度
         print("Train :", model.score(self.X_train_pca,  self.y_train))
         print("Test :", model.score(self.X_test_pca, self.y_test))
+        return model
 
