@@ -306,10 +306,10 @@ def li2image(lic_result, xzoom=3, yzoom=1):
     # im.show()
     # im.save(out)
 
-def resize(array, yx = [1025, 513]):
+def resize(array, yx):
     if list(array.shape) == list(yx):
         return array
-    im = Image.fromarray(im, mode="L")
+    im = Image.fromarray(array, mode="L")
     im = im.resize([yx[0], yx[1]], resample=Image.LANCZOS)#######
     return np.array(im)
 

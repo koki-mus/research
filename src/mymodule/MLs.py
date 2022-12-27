@@ -5,7 +5,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import glob 
 from mymodule import myfunc as mf
-from dotenv import load_dotenv
 import pandas as pd
 from PIL import Image
 from sklearn.model_selection import train_test_split
@@ -14,34 +13,56 @@ from sklearn.svm import LinearSVC
 import xgboost as xgb 
 from sklearn.svm import SVC 
 from sklearn.neighbors import KNeighborsClassifier 
-load_dotenv()
-root_dir = os.environ["root_dir"]
+
 
 #selfついてるのとついてないのとでバグあるかも
-#labelのcsvにリコネクションしてるかどうかを0,1で表す列がいる。
-#その列がない場合にはあとJUDGE_COLUMNが使えなくなるので、列を作ってからMLに突っ込む
+
 class ML:
-    def __init__(self, ALTIMAGE0, ALTIMAGE1, LABEL_SOURCE, JUDGE_COLUMN, IMGSHAPE, DO_PCA = False, dilute = False) -> None:
-        self.ALTIMAGES0 = root_dir + ALTIMAGE0
-        self.ALTIMAGES1 = root_dir + +ALTIMAGE1
-        self.LABEL_SOURCE = LABEL_SOURCE#
-        self.JUDGE_CCOLUMN = JUDGE_COLUMN#is_reconnecting列(0,1)
+    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=[10,100], DO_PCA = False, dilute = False, RANDOMSTATE = None) -> None:
+        self.TARGET = TARGET#magfieldx, pressure,,,
+        self.ALTIMAGES0 = ALTIMAGES0
+        self.ALTIMAGES1 = ALTIMAGES1
+        self.LABEL_SOURCE0 = LABEL_SOURCE0#
+        self.LABEL_SOURCE1 = LABEL_SOURCE1#
+        self.JUDGE_COLUMN = "is_reconnecting"#(0,1)
         self.IMGSHAPE = IMGSHAPE#出来れば画像サイズはすべて同じで合ってほしい。違うサイズが混じる場合は最も多いサイズを指定すること
         self.DO_PCA = DO_PCA
+        self.RANDOMSTATE = RANDOMSTATE
         # def compress(array, LEVEL=1):
         #     return mf.convolute(array,mf.ave_carnel(LEVEL), stride = LEVEL)
         # temp = compress(mf.load())
         # IMGSHAPE = temp.shape
-        labelcsvs = glob.glob(root_dir+LABEL_SOURCE)############
-        columns = ["path",JUDGE_COLUMN]###############
-        df = pd.DataFrame(columns=columns)
-        for labelcsv in labelcsvs:
-            dftmp = pd.read_csv(labelcsv, index_col=0)[columns]
+
+
+
+
+        labelcsvs0 = glob.glob(LABEL_SOURCE0+"*")############
+        labelcsvs1 = glob.glob(LABEL_SOURCE1+"*")############
+
+        columns = ["snappath","dataset","para","job","centerx","centery","xlow","xup","ylow","yup"]###############
+
+        df = pd.DataFrame(columns=columns+[self.JUDGE_COLUMN])
+        for labelcsv in labelcsvs0:
+            # dftmp = pd.read_csv(labelcsv, index_col=0)[columns]
+            dftmp = pd.read_csv(labelcsv)[columns]
+            #judgecolum=1 or 0 wo insert
+            dftmp[self.JUDGE_COLUMN] = 0
             df = pd.concat([df,dftmp])
-        self.PATH0 = list(df[df[JUDGE_COLUMN] == 0]["path"])
-        self.PATH0 = list(map(lambda path : root_dir+path, self.PATH0))
-        self.PATH1 = list(df[df[JUDGE_COLUMN] == 1]["path"])
-        self.PATH1 = list(map(lambda path : root_dir+path, self.PATH1))
+        for labelcsv in labelcsvs1:
+            # dftmp = pd.read_csv(labelcsv, index_col=0)[columns]
+            dftmp = pd.read_csv(labelcsv)[columns]
+            #judgecolum=1 or 0 wo insert
+            dftmp[self.JUDGE_COLUMN] = 1
+            df = pd.concat([df,dftmp])
+
+        #./magfieldx_49.52.6_47.773.npy
+        self.PATH0 = (df[df[self.JUDGE_COLUMN] == 0][["dataset","para","job","centerx","centery"]])
+        # self.PATH0["path"] = self.ALTIMAGES0+TARGET+"/_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy"
+        self.PATH0 = list(self.ALTIMAGES0+TARGET+"/"+ TARGET +"_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy")
+        self.PATH1 = (df[df[self.JUDGE_COLUMN] == 1][["dataset","para","job","centerx","centery"]])
+        # self.PATH1["path"] = self.ALTIMAGES1+TARGET+"/_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy"            
+        self.PATH1 = list(self.ALTIMAGES1+TARGET+"/"+ TARGET +"_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy")            
+
         self.split_testtrain()
         if dilute:
             self.dilute()
@@ -50,8 +71,8 @@ class ML:
     def size_dir(self, path):
         return len(glob.glob(path))
     def split_testtrain(self):#############別の方法も実装するかも
-        self.PATH0TRAIN, self.PATH0TEST = train_test_split(self.PATH0, test_size=0.6, shuffle=True, stratify=self.Path0)
-        self.PATH1TRAIN, self.PATH1TEST = train_test_split(self.PATH1, test_size=0.6, shuffle=True, stratify=self.Path1)
+        self.PATH0TRAIN, self.PATH0TEST = train_test_split(self.PATH0, test_size=0.6, shuffle=True)#, stratify=self.PATH0)
+        self.PATH1TRAIN, self.PATH1TEST = train_test_split(self.PATH1, test_size=0.6, shuffle=True)#, stratify=self.PATH1)
     def dilute(self):
         #ランダムな領域の切り取りを行う関数
         def random_crop(imagearay, size=0.8):
@@ -92,8 +113,8 @@ class ML:
             altarray_save(item,temp_output_dir)
     def load_data(self):
         # 訓練データ
-        self.ALLTARINDATA0 = glob.glob(self.ALTIMAGES0+"*") + self.PATH0TRAIN
-        self.ALLTARINDATA1 = glob.glob(self.ALTIMAGES1+"*") + self.PATH1TRAIN
+        self.ALLTARINDATA0 = list(glob.glob(self.ALTIMAGES0+self.TARGET+"/*")) + self.PATH0TRAIN
+        self.ALLTARINDATA1 = list(glob.glob(self.ALTIMAGES1+self.TARGET+"/*")) + self.PATH1TRAIN
         num_of_data_clear = len(self.ALLTARINDATA0) # リコネクションがない画像の枚数
         num_of_data_cloudy = len(self.ALLTARINDATA1) # リコネクションがある画像の枚数
         num_of_data_total = num_of_data_clear + num_of_data_cloudy # 学習データの全枚数
@@ -174,7 +195,7 @@ class ML:
         if self.DO_PCA:
             N_dim =  100 #100列に落とし込む
 
-            pca = PCA(n_components=N_dim, random_state=0)
+            pca = PCA(n_components=N_dim, random_state=self.RANDOMSTATE)
 
             self.X_train_pca = pca.fit_transform(self.X_train)
             self.X_test_pca = pca.transform(self.X_test)
@@ -186,9 +207,10 @@ class ML:
             print("PCA 非実施")
     
 ##################################
+#以下、学習の関数。手動で実行すること。
 
     def linearSVC(self):
-        model = LinearSVC(C=0.3, random_state=0) # インスタンスを生成
+        model = LinearSVC(C=0.3, random_state=self.RANDOMSTATE) # インスタンスを生成
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
         # 学習データに対する精度
         print("Train :", model.score(self.X_train_pca,  self.y_train)) 
@@ -196,8 +218,7 @@ class ML:
         print("Test :", model.score(self.X_test_pca, self.y_test)) 
         print(model.predict(self.X_test))
         pred = model.predict(self.X_test)
-        # svmres = pd.DataFrame(np.array([self.path_test, self.y_test, model.predict(X_test_pca)]).T, columns=["path", "y", "predict"])
-        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])###################
+        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
         print(classification_report(self.y_test, pred))
         return model
     def kneighbors(self):
@@ -209,7 +230,7 @@ class ML:
         print("Test :", model.score(self.X_test_pca, self.y_test))
         return model
     def rbfSVC(self):
-        model = SVC(C=0.3, kernel='rbf', random_state=0) # インスタンスを生成 
+        model = SVC(C=0.3, kernel='rbf', random_state=self.RANDOMSTATE) # インスタンスを生成 
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
         # 精度
         print("Train :", model.score(self.X_train_pca,  self.y_train))
