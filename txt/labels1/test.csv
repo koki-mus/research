@@ -1,8 +1,8 @@
-snappath,dataset,para,job,centerx,centery,xlow,xup,ylow,yup,is
-./snap49/lic_snap49.10.03.bmp,49,10,03,47,773,47,57,773,873,1
-./snap49/lic_snap49.10.04.bmp,49,10,04,47,773,47,57,773,873,1
-./snap49/lic_snap49.10.05.bmp,49,10,05,47,773,47,57,773,873,0
-./snap49/lic_snap49.10.06.bmp,49,10,06,47,773,47,57,773,873,0
+snappath,dataset,para,job,centerx,centery,xlow,xup,ylow,yup
+./snap49/lic_snap49.10.03.bmp,49,10,03,47,773,47,57,773,873
+./snap49/lic_snap49.10.04.bmp,49,10,04,47,773,47,57,773,873
+./snap49/lic_snap49.10.05.bmp,49,10,05,47,773,47,57,773,873
+./snap49/lic_snap49.10.06.bmp,49,10,06,47,773,47,57,773,873
 ./snap49/lic_snap49.10.03.bmp,49,10,03,82,620,77,87,570,670
 ./snap49/lic_snap49.10.03.bmp,49,10,03,130,410,125,135,360,460
 ./snap49/lic_snap49.12.13.bmp,49,12,13,77,455,72,82,405,505
