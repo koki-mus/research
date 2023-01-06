@@ -18,7 +18,7 @@ from sklearn.neighbors import KNeighborsClassifier
 #selfついてるのとついてないのとでバグあるかも
 
 class ML:
-    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=[10,100], DO_PCA = False, dilute = False, RANDOMSTATE = None) -> None:
+    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=[10,100], DO_PCA = False, dilute = False, randomstate = None) -> None:
         self.TARGET = TARGET#magfieldx, pressure,,,
         self.ALTIMAGES0 = ALTIMAGES0
         self.ALTIMAGES1 = ALTIMAGES1
@@ -27,7 +27,7 @@ class ML:
         self.JUDGE_COLUMN = "is_reconnecting"#(0,1)
         self.IMGSHAPE = IMGSHAPE#出来れば画像サイズはすべて同じで合ってほしい。違うサイズが混じる場合は最も多いサイズを指定すること
         self.DO_PCA = DO_PCA
-        self.RANDOMSTATE = RANDOMSTATE
+        self.randomstate = randomstate
         # def compress(array, LEVEL=1):
         #     return mf.convolute(array,mf.ave_carnel(LEVEL), stride = LEVEL)
         # temp = compress(mf.load())
@@ -128,7 +128,7 @@ class ML:
         path_list = self.ALLTARINDATA0
         i_count = 0
 
-        def load_regularize(item):#自動でやらない
+        def load_regularize(item):
             type = item[-4:]
             # print(item)
             if type == ".npy":
@@ -195,7 +195,7 @@ class ML:
         if self.DO_PCA:
             N_dim =  100 #100列に落とし込む
 
-            pca = PCA(n_components=N_dim, random_state=self.RANDOMSTATE)
+            pca = PCA(n_components=N_dim, random_state=self.randomstate)
 
             self.X_train_pca = pca.fit_transform(self.X_train)
             self.X_test_pca = pca.transform(self.X_test)
@@ -210,7 +210,7 @@ class ML:
 #以下、学習の関数。手動で実行すること。
 
     def linearSVC(self):
-        model = LinearSVC(C=0.3, random_state=self.RANDOMSTATE) # インスタンスを生成
+        model = LinearSVC(C=0.3, random_state=self.randomstate) # インスタンスを生成
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
         # 学習データに対する精度
         print("Train :", model.score(self.X_train_pca,  self.y_train)) 
@@ -230,7 +230,7 @@ class ML:
         print("Test :", model.score(self.X_test_pca, self.y_test))
         return model
     def rbfSVC(self):
-        model = SVC(C=0.3, kernel='rbf', random_state=self.RANDOMSTATE) # インスタンスを生成 
+        model = SVC(C=0.3, kernel='rbf', random_state=self.randomstate) # インスタンスを生成 
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
         # 精度
         print("Train :", model.score(self.X_train_pca,  self.y_train))
