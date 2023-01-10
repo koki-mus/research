@@ -216,8 +216,8 @@ class ML:
         print("Train :", model.score(self.X_train_pca,  self.y_train)) 
         # テストデータに対する精度
         print("Test :", model.score(self.X_test_pca, self.y_test)) 
-        print(model.predict(self.X_test))
         pred = model.predict(self.X_test)
+        print(pred)
         svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
         print(classification_report(self.y_test, pred))
         return model
@@ -228,6 +228,12 @@ class ML:
         # 精度
         print("Train :", model.score(self.X_train_pca, self.y_train))
         print("Test :", model.score(self.X_test_pca, self.y_test))
+
+        pred = model.predict(self.X_test)
+        print(pred)
+        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
+        print(classification_report(self.y_test, pred))
+
         return model
     def rbfSVC(self):
         model = SVC(C=0.3, kernel='rbf', random_state=self.randomstate) # インスタンスを生成 
@@ -235,6 +241,12 @@ class ML:
         # 精度
         print("Train :", model.score(self.X_train_pca,  self.y_train))
         print("Test :", model.score(self.X_test_pca, self.y_test))
+
+        pred = model.predict(self.X_test)
+        print(pred)
+        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
+        print(classification_report(self.y_test, pred))
+
         return model
     def XGBoost(self):
         model = xgb.XGBClassifier(n_estimators=80, max_depth=4, gamma=3) # インスタンスの生成
@@ -242,5 +254,11 @@ class ML:
         # 精度
         print("Train :", model.score(self.X_train_pca,  self.y_train))
         print("Test :", model.score(self.X_test_pca, self.y_test))
+
+        pred = model.predict(self.X_test)
+        print(pred)
+        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
+        print(classification_report(self.y_test, pred))
+
         return model
 
