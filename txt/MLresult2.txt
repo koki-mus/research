@@ -1,0 +1,1138 @@
+機械学習の結果です。
+model_density_X_linearSVC など書いているのは、
+densityのデータを用いて、X点をlinearSVCで認識するよう学習したという意味になっています。
+
+使っているデータは
+density, enstrophy, pressure,magfieldx, magfieldy, velocityx,velocityy,magxyの8つ。
+magxyはmagfieldのx,yを交互に並べたデータです。
+学習方法は
+linearSVC,kneighbors,rbfSVC,XGBoostの4つ。
+
+初めに訓練データ、テストデータそれぞれの正解率(accuracy)を書いています。
+続いて表にはテストデータに対する適合率、再現率、F1値を書いています。
+横軸の0.0がリコネクションが起きていない、
+1.0がリコネクションが起きているテストデータです。
+
+-------------------
+
+Train : 0.8829566121070408
+Test : 0.86296408089345
+
+              precision    recall  f1-score   support
+
+         0.0       0.83      0.67      0.74       967
+         1.0       0.87      0.94      0.91      2346
+
+    accuracy                           0.86      3313
+   macro avg       0.85      0.81      0.82      3313
+weighted avg       0.86      0.86      0.86      3313
+
+model_density_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9506365289685632
+Test : 0.9441593721702385
+
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.86      0.90       967
+         1.0       0.94      0.98      0.96      2346
+
+    accuracy                           0.94      3313
+   macro avg       0.94      0.92      0.93      3313
+weighted avg       0.94      0.94      0.94      3313
+
+model_density_X_kneighbors
+
+------------------
+
+
+
+
+
+Train : 0.9350553505535055
+Test : 0.9179539993134226
+
+              precision    recall  f1-score   support
+
+         0.0       0.87      0.89      0.88       967
+         1.0       0.94      0.93      0.94      1946
+
+    accuracy                           0.92      2913
+   macro avg       0.91      0.91      0.91      2913
+weighted avg       0.92      0.92      0.92      2913
+
+model_density_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9176383763837639
+Test : 0.9196704428424305
+
+              precision    recall  f1-score   support
+
+         0.0       0.84      0.93      0.88       967
+         1.0       0.96      0.91      0.94      1946
+
+    accuracy                           0.92      2913
+   macro avg       0.90      0.92      0.91      2913
+weighted avg       0.92      0.92      0.92      2913
+
+model_density_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9174907749077491
+Test : 0.9117748026089941
+
+              precision    recall  f1-score   support
+
+         0.0       0.83      0.93      0.87       967
+         1.0       0.96      0.90      0.93      1946
+
+    accuracy                           0.91      2913
+   macro avg       0.89      0.92      0.90      2913
+weighted avg       0.92      0.91      0.91      2913
+
+model_density_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.999409594095941
+Test : 0.9993134225883968
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_density_O_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.8695765133800988
+Test : 0.8424388771506188
+
+              precision    recall  f1-score   support
+
+         0.0       0.77      0.65      0.71       967
+         1.0       0.87      0.92      0.89      2346
+
+    accuracy                           0.84      3313
+   macro avg       0.82      0.79      0.80      3313
+weighted avg       0.84      0.84      0.84      3313
+
+model_enstrophy_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.6291244479085477
+Test : 0.6272260790824027
+
+              precision    recall  f1-score   support
+
+         0.0       0.44      0.96      0.60       967
+         1.0       0.97      0.49      0.65      2346
+
+    accuracy                           0.63      3313
+   macro avg       0.70      0.72      0.63      3313
+weighted avg       0.81      0.63      0.64      3313
+
+model_enstrophy_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.7620161080800207
+Test : 0.7416239058255357
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      0.11      0.21       967
+         1.0       0.73      1.00      0.85      2346
+
+    accuracy                           0.74      3313
+   macro avg       0.87      0.56      0.53      3313
+weighted avg       0.81      0.74      0.66      3313
+
+model_enstrophy_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9989607690309171
+Test : 0.9975852701479022
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_enstrophy_X_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9297416974169742
+Test : 0.8990731204943357
+
+              precision    recall  f1-score   support
+
+         0.0       0.85      0.84      0.85       967
+         1.0       0.92      0.93      0.92      1946
+
+    accuracy                           0.90      2913
+   macro avg       0.89      0.89      0.89      2913
+weighted avg       0.90      0.90      0.90      2913
+
+model_enstrophy_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8516605166051661
+Test : 0.826295914864401
+
+              precision    recall  f1-score   support
+
+         0.0       0.73      0.75      0.74       967
+         1.0       0.87      0.87      0.87      1946
+
+    accuracy                           0.83      2913
+   macro avg       0.80      0.81      0.80      2913
+weighted avg       0.83      0.83      0.83      2913
+
+model_enstrophy_O_kneighbors
+
+------------------
+
+
+
+
+
+Train : 0.9495972979994803
+Test : 0.9396317536975551
+
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.85      0.89       967
+         1.0       0.94      0.98      0.96      2346
+
+    accuracy                           0.94      3313
+   macro avg       0.94      0.91      0.92      3313
+weighted avg       0.94      0.94      0.94      3313
+
+model_pressure_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8254091971940763
+Test : 0.8321762752792031
+
+              precision    recall  f1-score   support
+
+         0.0       0.95      0.45      0.61       967
+         1.0       0.81      0.99      0.89      2346
+
+    accuracy                           0.83      3313
+   macro avg       0.88      0.72      0.75      3313
+weighted avg       0.85      0.83      0.81      3313
+
+model_pressure_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9319303715250714
+
+Train : 0.9998523985239852
+Test : 0.9996567112941984
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_pressure_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9213284132841328
+Test : 0.9189838654308273
+
+              precision    recall  f1-score   support
+
+         0.0       0.84      0.93      0.88       967
+         1.0       0.96      0.91      0.94      1946
+
+    accuracy                           0.92      2913
+   macro avg       0.90      0.92      0.91      2913
+weighted avg       0.92      0.92      0.92      2913
+
+model_pressure_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9533579335793358
+Test : 0.9430140748369379
+
+              precision    recall  f1-score   support
+
+         0.0       0.90      0.93      0.92       967
+         1.0       0.97      0.95      0.96      1946
+
+    accuracy                           0.94      2913
+   macro avg       0.93      0.94      0.94      2913
+weighted avg       0.94      0.94      0.94      2913
+
+model_pressure_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9995571955719558
+Test : 0.9989701338825953
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_pressure_O_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9510262405819694
+Test : 0.9335949290673106
+
+              precision    recall  f1-score   support
+
+         0.0       0.91      0.86      0.88       967
+         1.0       0.94      0.97      0.95      2346
+
+    accuracy                           0.93      3313
+   macro avg       0.93      0.91      0.92      3313
+weighted avg       0.93      0.93      0.93      3313
+
+model_magfieldx_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8885424785658612
+Test : 0.8834892846362813
+
+              precision    recall  f1-score   support
+
+         0.0       0.78      0.84      0.81       967
+         1.0       0.93      0.90      0.92      2346
+
+    accuracy                           0.88      3313
+   macro avg       0.86      0.87      0.86      3313
+weighted avg       0.89      0.88      0.88      3313
+
+model_magfieldx_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9467394128345025
+Test : 0.9308783579837006
+
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.81      0.87       967
+         1.0       0.93      0.98      0.95      2346
+
+    accuracy                           0.93      3313
+   macro avg       0.93      0.90      0.91      3313
+weighted avg       0.93      0.93      0.93      3313
+
+model_magfieldx_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9990906729020524
+Test : 0.9978871113794144
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      0.99      1.00       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_magfieldx_X_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9101107011070111
+Test : 0.8853415722622726
+
+              precision    recall  f1-score   support
+
+         0.0       0.88      0.76      0.81       967
+         1.0       0.89      0.95      0.92      1946
+
+    accuracy                           0.89      2913
+   macro avg       0.88      0.85      0.87      2913
+weighted avg       0.88      0.89      0.88      2913
+
+model_magfieldx_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8559409594095941
+Test : 0.8606247854445589
+
+              precision    recall  f1-score   support
+
+         0.0       0.72      0.94      0.82       967
+         1.0       0.96      0.82      0.89      1946
+
+    accuracy                           0.86      2913
+   macro avg       0.84      0.88      0.85      2913
+weighted avg       0.88      0.86      0.86      2913
+
+model_magfieldx_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.957490774907749
+Test : 0.9461036731891521
+
+              precision    recall  f1-score   support
+
+         0.0       0.95      0.89      0.92       967
+         1.0       0.95      0.97      0.96      1946
+
+    accuracy                           0.95      2913
+   macro avg       0.95      0.93      0.94      2913
+weighted avg       0.95      0.95      0.95      2913
+
+model_magfieldx_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9991143911439114
+Test : 0.9975969790593889
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      0.99      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_magfieldx_O_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9416731618602234
+Test : 0.9182010262601872
+
+              precision    recall  f1-score   support
+
+         0.0       0.88      0.83      0.86       967
+         1.0       0.93      0.95      0.94      2346
+
+    accuracy                           0.92      3313
+   macro avg       0.91      0.89      0.90      3313
+weighted avg       0.92      0.92      0.92      3313
+
+model_magfieldy_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9058196934268641
+Test : 0.9040144883791126
+
+              precision    recall  f1-score   support
+
+         0.0       0.90      0.75      0.82       967
+         1.0       0.90      0.97      0.93      2346
+
+    accuracy                           0.90      3313
+   macro avg       0.90      0.86      0.88      3313
+weighted avg       0.90      0.90      0.90      3313
+
+model_magfieldy_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9347882566900494
+Test : 0.9236341684274072
+
+              precision    recall  f1-score   support
+
+         0.0       0.96      0.77      0.86       967
+         1.0       0.91      0.99      0.95      2346
+
+    accuracy                           0.92      3313
+   macro avg       0.94      0.88      0.90      3313
+weighted avg       0.93      0.92      0.92      3313
+
+model_magfieldy_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9992205767731879
+Test : 0.9987926350739511
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_magfieldy_X_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9902583025830258
+Test : 0.9818056985925163
+
+              precision    recall  f1-score   support
+
+         0.0       0.98      0.96      0.97       967
+         1.0       0.98      0.99      0.99      1946
+
+    accuracy                           0.98      2913
+   macro avg       0.98      0.98      0.98      2913
+weighted avg       0.98      0.98      0.98      2913
+
+model_magfieldy_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9291512915129151
+Test : 0.924133196017851
+
+              precision    recall  f1-score   support
+
+         0.0       0.93      0.83      0.88       967
+         1.0       0.92      0.97      0.94      1946
+
+    accuracy                           0.92      2913
+   macro avg       0.93      0.90      0.91      2913
+weighted avg       0.92      0.92      0.92      2913
+
+model_magfieldy_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9560147601476015
+Test : 0.9423274974253347
+
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.88      0.91       967
+         1.0       0.94      0.97      0.96      1946
+
+    accuracy                           0.94      2913
+   macro avg       0.94      0.93      0.93      2913
+weighted avg       0.94      0.94      0.94      2913
+
+model_magfieldy_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9995571955719558
+Test : 0.9989701338825953
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_magfieldy_O_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.8559366069108859
+Test : 0.8300633866586176
+
+              precision    recall  f1-score   support
+
+         0.0       0.74      0.64      0.69       967
+         1.0       0.86      0.91      0.88      2346
+
+    accuracy                           0.83      3313
+   macro avg       0.80      0.77      0.79      3313
+weighted avg       0.83      0.83      0.83      3313
+
+model_velocityx_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8063133281371785
+Test : 0.7980682161183218
+
+              precision    recall  f1-score   support
+
+         0.0       0.62      0.78      0.69       967
+         1.0       0.90      0.81      0.85      2346
+
+    accuracy                           0.80      3313
+   macro avg       0.76      0.79      0.77      3313
+weighted avg       0.82      0.80      0.80      3313
+
+model_velocityx_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.8564562223954274
+Test : 0.8373075762149109
+
+              precision    recall  f1-score   support
+
+         0.0       0.93      0.48      0.63       967
+         1.0       0.82      0.99      0.90      2346
+
+    accuracy                           0.84      3313
+   macro avg       0.88      0.73      0.76      3313
+weighted avg       0.85      0.84      0.82      3313
+
+model_velocityx_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9990906729020524
+Test : 0.9978871113794144
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      0.99      1.00       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_velocityx_X_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.8822140221402214
+Test : 0.8513559903879162
+
+              precision    recall  f1-score   support
+
+         0.0       0.79      0.75      0.77       967
+         1.0       0.88      0.90      0.89      1946
+
+    accuracy                           0.85      2913
+   macro avg       0.84      0.83      0.83      2913
+weighted avg       0.85      0.85      0.85      2913
+
+model_velocityx_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8519557195571956
+Test : 0.8389975969790594
+
+              precision    recall  f1-score   support
+
+         0.0       0.75      0.77      0.76       967
+         1.0       0.89      0.87      0.88      1946
+
+    accuracy                           0.84      2913
+   macro avg       0.82      0.82      0.82      2913
+weighted avg       0.84      0.84      0.84      2913
+
+model_velocityx_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.8977121771217712
+Test : 0.8637143837967731
+
+              precision    recall  f1-score   support
+
+         0.0       0.95      0.62      0.75       967
+         1.0       0.84      0.99      0.91      1946
+
+    accuracy                           0.86      2913
+   macro avg       0.90      0.80      0.83      2913
+weighted avg       0.88      0.86      0.85      2913
+
+model_velocityx_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9989667896678966
+Test : 0.9982835564709921
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_velocityx_O_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9676539360872954
+Test : 0.9468759432538485
+
+              precision    recall  f1-score   support
+
+         0.0       0.91      0.91      0.91       967
+         1.0       0.96      0.96      0.96      2346
+
+    accuracy                           0.95      3313
+   macro avg       0.94      0.94      0.94      3313
+weighted avg       0.95      0.95      0.95      3313
+
+model_velocityy_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.89893478825669
+Test : 0.8934500452761848
+
+              precision    recall  f1-score   support
+
+         0.0       0.81      0.83      0.82       967
+         1.0       0.93      0.92      0.92      2346
+
+    accuracy                           0.89      3313
+   macro avg       0.87      0.88      0.87      3313
+weighted avg       0.89      0.89      0.89      3313
+
+model_velocityy_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9612886464016628
+Test : 0.9444612134017507
+
+              precision    recall  f1-score   support
+
+         0.0       0.89      0.93      0.91       967
+         1.0       0.97      0.95      0.96      2346
+
+    accuracy                           0.94      3313
+   macro avg       0.93      0.94      0.93      3313
+weighted avg       0.95      0.94      0.94      3313
+
+model_velocityy_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9994803845154585
+Test : 0.9987926350739511
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_velocityy_X_XGBoost
+
+------------------
+
+
+
+
+
+
+Train : 0.9354981549815499
+Test : 0.9224167524888431
+
+              precision    recall  f1-score   support
+
+         0.0       0.90      0.86      0.88       967
+         1.0       0.93      0.95      0.94      1946
+
+    accuracy                           0.92      2913
+   macro avg       0.92      0.91      0.91      2913
+weighted avg       0.92      0.92      0.92      2913
+
+model_velocityy_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9078966789667897
+Test : 0.9069687607277721
+
+              precision    recall  f1-score   support
+
+         0.0       0.89      0.83      0.85       967
+         1.0       0.92      0.95      0.93      1946
+
+    accuracy                           0.91      2913
+   macro avg       0.90      0.89      0.89      2913
+weighted avg       0.91      0.91      0.91      2913
+
+model_velocityy_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.9030258302583026
+Test : 0.891520768966701
+
+              precision    recall  f1-score   support
+
+         0.0       0.91      0.75      0.82       967
+         1.0       0.89      0.96      0.92      1946
+
+    accuracy                           0.89      2913
+   macro avg       0.90      0.86      0.87      2913
+weighted avg       0.89      0.89      0.89      2913
+
+model_velocityy_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9991143911439114
+Test : 0.9979402677651905
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_velocityy_O_XGBoost
+
+------------------
+
+
+
+Train : 0.9398545076643284
+Test : 0.9148807727135527
+
+              precision    recall  f1-score   support
+
+         0.0       0.90      0.82      0.86       967
+         1.0       0.93      0.96      0.94      2346
+
+    accuracy                           0.92      3313
+   macro avg       0.91      0.89      0.90      3313
+weighted avg       0.92      0.92      0.92      3313
+
+model_magxy_X_linearSVC
+
+------------------
+
+
+
+
+Train : 0.9172512340867758
+Test : 0.9136734077875037
+[1. 0. 1. ... 1. 1. 1.]
+              precision    recall  f1-score   support
+
+         0.0       0.98      0.72      0.83       967
+         1.0       0.90      0.99      0.94      2346
+
+    accuracy                           0.91      3313
+   macro avg       0.94      0.86      0.89      3313
+weighted avg       0.92      0.91      0.91      3313
+
+model_magxy_X_kneighbors
+
+------------------
+
+
+
+
+Train : 0.8777604572616264
+Test : 0.8744340476909146
+[1. 0. 1. ... 1. 1. 1.]
+              precision    recall  f1-score   support
+
+         0.0       0.88      0.66      0.75       967
+         1.0       0.87      0.96      0.92      2346
+
+    accuracy                           0.87      3313
+   macro avg       0.88      0.81      0.83      3313
+weighted avg       0.88      0.87      0.87      3313
+
+model_magxy_X_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9987009612886464
+Test : 0.9969815876848778
+[0 0 1 ... 1 1 1]
+              precision    recall  f1-score   support
+
+         0.0       1.00      0.99      0.99       967
+         1.0       1.00      1.00      1.00      2346
+
+    accuracy                           1.00      3313
+   macro avg       1.00      1.00      1.00      3313
+weighted avg       1.00      1.00      1.00      3313
+
+model_magxy_X_XGBoost
+
+------------------
+
+
+
+
+Train : 0.9551291512915129
+Test : 0.9364915894267078
+[0. 0. 0. ... 1. 1. 1.]
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.87      0.90       967
+         1.0       0.94      0.97      0.95      1946
+
+    accuracy                           0.94      2913
+   macro avg       0.94      0.92      0.93      2913
+weighted avg       0.94      0.94      0.94      2913
+
+model_magxy_O_linearSVC
+
+------------------
+
+
+
+
+Train : 0.8977121771217712
+Test : 0.8976999656711294
+[0. 1. 0. ... 1. 1. 1.]
+              precision    recall  f1-score   support
+
+         0.0       0.99      0.70      0.82       967
+         1.0       0.87      1.00      0.93      1946
+
+    accuracy                           0.90      2913
+   macro avg       0.93      0.85      0.87      2913
+weighted avg       0.91      0.90      0.89      2913
+
+model_magxy_O_kneighbors
+
+------------------
+
+
+
+
+Train : 0.8922509225092251
+Test : 0.8870580157912805
+[0. 1. 0. ... 1. 1. 1.]
+              precision    recall  f1-score   support
+
+         0.0       0.94      0.71      0.81       967
+         1.0       0.87      0.98      0.92      1946
+
+    accuracy                           0.89      2913
+   macro avg       0.90      0.84      0.86      2913
+weighted avg       0.89      0.89      0.88      2913
+
+model_magxy_O_rbfSVC
+
+------------------
+
+
+
+
+Train : 0.9997047970479704
+Test : 0.9993134225883968
+
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00       967
+         1.0       1.00      1.00      1.00      1946
+
+    accuracy                           1.00      2913
+   macro avg       1.00      1.00      1.00      2913
+weighted avg       1.00      1.00      1.00      2913
+
+model_magxy_O_XGBoost
+
+------------------
