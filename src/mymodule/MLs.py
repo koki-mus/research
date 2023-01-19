@@ -18,7 +18,7 @@ from sklearn.neighbors import KNeighborsClassifier
 #selfついてるのとついてないのとでバグあるかも
 
 class ML:
-    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=[10,100], DO_PCA = False, dilute = False, randomstate = None) -> None:
+    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=(100,10), DO_PCA = False, dilute = False, randomstate = None) -> None:
         self.TARGET = TARGET#magfieldx, pressure,,,
         self.ALTIMAGES0 = ALTIMAGES0
         self.ALTIMAGES1 = ALTIMAGES1
@@ -119,7 +119,7 @@ class ML:
         num_of_data_cloudy = len(self.ALLTARINDATA1) # リコネクションがある画像の枚数
         num_of_data_total = num_of_data_clear + num_of_data_cloudy # 学習データの全枚数
 
-        N_col = self.IMGSHAPE[0]*self.IMGSHAPE[1]*1 # 行列の列数
+        N_col = self.IMGSHAPE[1]*self.IMGSHAPE[0]*1 # 行列の列数
         self.X_train = np.zeros((num_of_data_total, N_col)) # 学習データ格納のためゼロ行列生成
         self.y_train = np.zeros((num_of_data_total)) # 学習データに対するラベルを格納するためのゼロ行列生成
         self.path_train = list("" for i in range(num_of_data_total)) # 学習データに対するpathを格納するためのゼロ行列生成
@@ -145,6 +145,8 @@ class ML:
                 im = mf.load(item, z=3)
             # img_resize = compress(im)
             img_resize = mf.resize(im, self.IMGSHAPE)
+            if im.shape != self.IMGSHAPE:
+                print("resized:",im.shape, self.IMGSHAPE)
             return ((img_resize - min(img_resize.flat)) / max(img_resize.flat)).flat # 正規化
 
         for item in path_list:
@@ -168,7 +170,7 @@ class ML:
         num_of_data_cloudy = len(self.PATH1TEST) # リコネクションがある画像の枚数
         num_of_data_total = num_of_data_clear + num_of_data_cloudy # テストデータの全枚数
         
-        N_col = self.IMGSHAPE[0]*self.IMGSHAPE[1]*1 # 行列の列数(RGBなら*3)
+        N_col = self.IMGSHAPE[1]*self.IMGSHAPE[0]*1 # 行列の列数(RGBなら*3)
         self.X_test = np.zeros((num_of_data_total, N_col)) # テストデータ格納のためゼロ行列生成
         self.y_test = np.zeros(num_of_data_total) # テストデータに対するラベルを格納するためのゼロ行列生成
         self.path_test = list("" for i in range(num_of_data_total)) # テストデータに対するpathを格納するためのゼロ行列生成
@@ -200,54 +202,43 @@ class ML:
             self.X_train_pca = pca.fit_transform(self.X_train)
             self.X_test_pca = pca.transform(self.X_test)
 
-            print('累積寄与率: {0}'.format(sum(pca.explained_variance_ratio_)))
+            print('PCA累積寄与率: {0}'.format(sum(pca.explained_variance_ratio_)))
         else:
             self.X_train_pca = self.X_train
             self.X_test_pca = self.X_test
-            print("PCA 非実施")
+            # print("PCA 非実施")
     
 ##################################
 #以下、学習の関数。手動で実行すること。
 
-    def linearSVC(self):
-        model = LinearSVC(C=0.3, random_state=self.randomstate) # インスタンスを生成
-        model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        # 学習データに対する精度
-        print("Train :", model.score(self.X_train_pca,  self.y_train)) 
-        # テストデータに対する精度
-        print("Test :", model.score(self.X_test_pca, self.y_test)) 
-        pred = model.predict(self.X_test)
-        print(pred)
-        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
-        print(classification_report(self.y_test, pred))
-        return model
-    def kneighbors(self):
-        n_neighbors = int(np.sqrt(6000))  # kの設定
-        model = KNeighborsClassifier(n_neighbors = n_neighbors)  
-        model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        # 精度
-        print("Train :", model.score(self.X_train_pca, self.y_train))
-        print("Test :", model.score(self.X_test_pca, self.y_test))
+    def modelreturn(self,model):
 
-        pred = model.predict(self.X_test)
-        print(pred)
-        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
-        print(classification_report(self.y_test, pred))
-
-        return model
-    def rbfSVC(self):
-        model = SVC(C=0.3, kernel='rbf', random_state=self.randomstate) # インスタンスを生成 
-        model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        # 精度
+        
         print("Train :", model.score(self.X_train_pca,  self.y_train))
         print("Test :", model.score(self.X_test_pca, self.y_test))
 
         pred = model.predict(self.X_test)
         print(pred)
-        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
-        print(classification_report(self.y_test, pred))
+        mlres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
+        report = classification_report(self.y_test, pred)
+        print(report)
+        return model, mlres, report
 
-        return model
+    def linearSVC(self):
+        model = LinearSVC(C=0.3, random_state=self.randomstate) # インスタンスを生成
+        model.fit(self.X_train_pca, self.y_train) # モデルの学習
+
+        
+        return self.modelreturn(model)
+    def kneighbors(self):
+        n_neighbors = int(np.sqrt(6000))  # kの設定
+        model = KNeighborsClassifier(n_neighbors = n_neighbors)  
+        model.fit(self.X_train_pca, self.y_train) # モデルの学習
+        return self.modelreturn(model)
+    def rbfSVC(self):
+        model = SVC(C=0.3, kernel='rbf', random_state=self.randomstate) # インスタンスを生成 
+        model.fit(self.X_train_pca, self.y_train) # モデルの学習
+        return self.modelreturn(model)
     def XGBoost(self):
         model = xgb.XGBClassifier(n_estimators=80, max_depth=4, gamma=3) # インスタンスの生成
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
@@ -257,8 +248,17 @@ class ML:
 
         pred = model.predict(self.X_test)
         print(pred)
-        svmres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
-        print(classification_report(self.y_test, pred))
+        mlres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
+        report = classification_report(self.y_test, pred)
+        print(report)
 
-        return model
+        
+        return model, mlres, report
 
+
+
+    def testmodel(self):
+        n_neighbors = int(np.sqrt(6000))  # kの設定
+        model = KNeighborsClassifier(n_neighbors = n_neighbors)  
+        model.fit(self.X_train_pca, self.y_train) # モデルの学習
+        return self.modelreturn(model)
