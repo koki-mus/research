@@ -13,17 +13,17 @@ from sklearn.svm import LinearSVC
 import xgboost as xgb 
 from sklearn.svm import SVC 
 from sklearn.neighbors import KNeighborsClassifier 
-
+import re
 
 #selfついてるのとついてないのとでバグあるかも
 
 class ML:
-    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, LABEL_SOURCE0, LABEL_SOURCE1, IMGSHAPE=(100,10), DO_PCA = False, dilute = False, randomstate = None) -> None:
+    def __init__(self, TARGET, ALTIMAGES0, ALTIMAGES1, SOURCE0, SOURCE1, IMGSHAPE=(100,10), DO_PCA = False, dilute = False, randomstate = None) -> None:
         self.TARGET = TARGET#magfieldx, pressure,,,
         self.ALTIMAGES0 = ALTIMAGES0
         self.ALTIMAGES1 = ALTIMAGES1
-        self.LABEL_SOURCE0 = LABEL_SOURCE0#
-        self.LABEL_SOURCE1 = LABEL_SOURCE1#
+        self.SOURCE0 = SOURCE0#
+        self.SOURCE1 = SOURCE1#
         self.JUDGE_COLUMN = "is_reconnecting"#(0,1)
         self.IMGSHAPE = IMGSHAPE#出来れば画像サイズはすべて同じで合ってほしい。違うサイズが混じる場合は最も多いサイズを指定すること
         self.DO_PCA = DO_PCA
@@ -35,7 +35,7 @@ class ML:
 
 
 
-
+        """
         labelcsvs0 = glob.glob(LABEL_SOURCE0+"*")############
         labelcsvs1 = glob.glob(LABEL_SOURCE1+"*")############
 
@@ -54,14 +54,23 @@ class ML:
             #judgecolum=1 or 0 wo insert
             dftmp[self.JUDGE_COLUMN] = 1
             df = pd.concat([df,dftmp])
-
+        """
         #./magfieldx_49.52.6_47.773.npy
-        self.PATH0 = (df[df[self.JUDGE_COLUMN] == 0][["dataset","para","job","centerx","centery"]])
-        # self.PATH0["path"] = self.ALTIMAGES0+TARGET+"/_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy"
-        self.PATH0 = list(self.ALTIMAGES0+TARGET+"/"+ TARGET +"_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy")
-        self.PATH1 = (df[df[self.JUDGE_COLUMN] == 1][["dataset","para","job","centerx","centery"]])
-        # self.PATH1["path"] = self.ALTIMAGES1+TARGET+"/_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy"            
-        self.PATH1 = list(self.ALTIMAGES1+TARGET+"/"+ TARGET +"_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy")            
+        #############
+        self.PATH0 = []
+        for i in self.SOURCE0:
+            self.PATH0.extend(glob.glob(i + self.TARGET +"/*"))
+        self.PATH1 = []
+        for i in self.SOURCE1:
+            self.PATH1.extend(glob.glob(i + self.TARGET +"/*"))
+        #############
+
+        # self.PATH0 = (df[df[self.JUDGE_COLUMN] == 0][["dataset","para","job","centerx","centery"]])
+        # # self.PATH0["path"] = self.ALTIMAGES0+TARGET+"/_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy"
+        # self.PATH0 = list(self.ALTIMAGES0+TARGET+"/"+ TARGET +"_"+self.PATH0['dataset'].astype(str)+"."+ self.PATH0['para'].astype(str)+"."+self.PATH0['job'].astype(str)+"_"+self.PATH0['centerx'].astype(str) +"."+self.PATH0['centery'].astype(str)+".npy")
+        # self.PATH1 = (df[df[self.JUDGE_COLUMN] == 1][["dataset","para","job","centerx","centery"]])
+        # # self.PATH1["path"] = self.ALTIMAGES1+TARGET+"/_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy"            
+        # self.PATH1 = list(self.ALTIMAGES1+TARGET+"/"+ TARGET +"_"+self.PATH1['dataset'].astype(str)+"."+ self.PATH1['para'].astype(str)+"."+self.PATH1['job'].astype(str)+"_"+self.PATH1['centerx'].astype(str) +"."+self.PATH1['centery'].astype(str)+".npy")            
 
         self.split_testtrain()
         if dilute:
@@ -113,8 +122,8 @@ class ML:
             altarray_save(item,temp_output_dir)
     def load_data(self):
         # 訓練データ
-        self.ALLTARINDATA0 = list(glob.glob(self.ALTIMAGES0+self.TARGET+"/*")) + self.PATH0TRAIN
-        self.ALLTARINDATA1 = list(glob.glob(self.ALTIMAGES1+self.TARGET+"/*")) + self.PATH1TRAIN
+        self.ALLTARINDATA0 = list(set(list(glob.glob(self.ALTIMAGES0+self.TARGET+"/*")) + self.PATH0TRAIN))
+        self.ALLTARINDATA1 = list(set(list(glob.glob(self.ALTIMAGES1+self.TARGET+"/*")) + self.PATH1TRAIN))
         num_of_data_clear = len(self.ALLTARINDATA0) # リコネクションがない画像の枚数
         num_of_data_cloudy = len(self.ALLTARINDATA1) # リコネクションがある画像の枚数
         num_of_data_total = num_of_data_clear + num_of_data_cloudy # 学習データの全枚数
