@@ -211,49 +211,33 @@ class ML:
 ##################################
 #以下、学習の関数。手動で実行すること。
 
-    def modelreturn(self,model):
-
-        
-        print("Train :", model.score(self.X_train_pca,  self.y_train))
-        print("Test :", model.score(self.X_test_pca, self.y_test))
-
+    def modelreturns(self,model):
         pred = model.predict(self.X_test)
-        print(pred)
         mlres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
         report = classification_report(self.y_test, pred)
-        print(report)
         return model, mlres, report
+    def printscore(self, modelands):
+        print("Train :", modelands[0].score(self.X_train_pca,  self.y_train))
+        print("Test :", modelands[0].score(self.X_test_pca, self.y_test))
+        print(modelands[2])
 
     def linearSVC(self):
         model = LinearSVC(C=0.3, random_state=self.randomstate) # インスタンスを生成
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
-
-        
-        return self.modelreturn(model)
+        return self.modelreturns(model)
     def kneighbors(self):
         n_neighbors = int(np.sqrt(6000))  # kの設定
         model = KNeighborsClassifier(n_neighbors = n_neighbors)  
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        return self.modelreturn(model)
+        return self.modelreturns(model)
     def rbfSVC(self):
         model = SVC(C=0.3, kernel='rbf', random_state=self.randomstate) # インスタンスを生成 
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        return self.modelreturn(model)
+        return self.modelreturns(model)
     def XGBoost(self):
         model = xgb.XGBClassifier(n_estimators=80, max_depth=4, gamma=3) # インスタンスの生成
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        # 精度
-        print("Train :", model.score(self.X_train_pca,  self.y_train))
-        print("Test :", model.score(self.X_test_pca, self.y_test))
-
-        pred = model.predict(self.X_test)
-        print(pred)
-        mlres = pd.DataFrame(np.array([self.path_test, self.y_test, pred]).T, columns=["path", "y", "predict"])
-        report = classification_report(self.y_test, pred)
-        print(report)
-
-        
-        return model, mlres, report
+        return self.modelreturns(model)
 
 
 
@@ -261,4 +245,4 @@ class ML:
         n_neighbors = int(np.sqrt(6000))  # kの設定
         model = KNeighborsClassifier(n_neighbors = n_neighbors)  
         model.fit(self.X_train_pca, self.y_train) # モデルの学習
-        return self.modelreturn(model)
+        return self.modelreturns(model)

@@ -1,1 +1,0 @@
-{'path': './snap49/lic_snap49.52.03.bmp', 'locnumx': 329, 'locnumy': 429.86341463414635, 'locnumx2': 294, 'locnumy2': 402.05853658536586, 'rangenumx': 70, 'rangenumy': 55.609756097560975}
