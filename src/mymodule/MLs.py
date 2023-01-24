@@ -111,13 +111,21 @@ class ML:
         #リコネクションがない画像ファイルのパスのリストを取得
         files = self.PATH0TRAIN
         #出力ディレクトリのパス
-        temp_output_dir = self.ALTIMAGES0
+        if not os.path.exists(self.ALTIMAGES0):
+            raise "ALTIMGES0 is not correct"
+        temp_output_dir = self.ALTIMAGES0+self.TARGET+"/"
+        if  not os.path.exists(temp_output_dir):
+                os.mkdir(temp_output_dir)
         for item in files:
             altarray_save(item,temp_output_dir)
         #リコネクションがある画像ファイルのパスのリストを取得
         files = self.PATH1TRAIN
         #出力ディレクトリのパス
-        temp_output_dir = self.ALTIMAGES1
+        if not os.path.exists(self.ALTIMAGES1):
+            raise "ALTIMGES1 is not correct"
+        temp_output_dir = self.ALTIMAGES1+self.TARGET+"/"
+        if  not os.path.exists(temp_output_dir):
+            os.mkdir(temp_output_dir)
         for item in files:
             altarray_save(item,temp_output_dir)
     def load_data(self):
