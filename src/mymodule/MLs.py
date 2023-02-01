@@ -80,8 +80,23 @@ class ML:
     def size_dir(self, path):
         return len(glob.glob(path))
     def split_testtrain(self):#############別の方法も実装するかも
-        self.PATH0TRAIN, self.PATH0TEST = train_test_split(self.PATH0, test_size=0.6, shuffle=True)#, stratify=self.PATH0)
-        self.PATH1TRAIN, self.PATH1TEST = train_test_split(self.PATH1, test_size=0.6, shuffle=True)#, stratify=self.PATH1)
+        def split4977(paths):
+            array49 = []
+            array77 = []
+            for path in paths:
+                if self.TARGET + "_49" in path:
+                    array49.append(path)
+                elif self.TARGET + "_77" in path:
+                    array77.append(path)
+                else:
+                    print("split4977 error")
+            return array49, array77
+            # return np.array(array49), np.array(array77)
+        
+        self.PATH0TRAIN, self.PATH0TEST = split4977(self.PATH0)
+        self.PATH1TRAIN, self.PATH1TEST = split4977(self.PATH1)
+        # self.PATH0TRAIN, self.PATH0TEST = train_test_split(self.PATH0, test_size=0.6, shuffle=True)#, stratify=self.PATH0)
+        # self.PATH1TRAIN, self.PATH1TEST = train_test_split(self.PATH1, test_size=0.6, shuffle=True)#, stratify=self.PATH1)
     def dilute(self):
         #ランダムな領域の切り取りを行う関数
         def random_crop(imagearay, size=0.8):
@@ -164,7 +179,7 @@ class ML:
             # img_resize = compress(im)
             img_resize = mf.resize(im, self.IMGSHAPE)
             if im.shape != self.IMGSHAPE:
-                print("resized:", item,im.shape, self.IMGSHAPE)
+                print("resized:",item,im.shape,"to" ,self.IMGSHAPE)
             return ((img_resize - min(img_resize.flat)) / max(img_resize.flat)).flat # 正規化
 
         for item in path_list:
