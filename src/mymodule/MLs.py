@@ -102,8 +102,9 @@ class ML:
             np.save(temp_output_dir + "flip_" + file_name , img_flip) # 画像保存
             img_mirror = np.fliplr(img) # 画像の左右反転
             np.save(temp_output_dir + "mirr_" + file_name , img_mirror) # 画像保存
-            img_T = img.T # 画像の上下左右反転
-            np.save(temp_output_dir + "trns_" + file_name , img_T) # 画像保存
+            # img_T = mf.resize(img.T, self.IMGSHAPE) # 画像の上下左右反転
+            # print(img.shape,img.T.shape, img_T.shape, self.IMGSHAPE)
+            # np.save(temp_output_dir + "trns_" + file_name , img_T) # 画像保存
             # img_crop = random_crop(img) # 画像の切り取り
             # img_crop = img_crop.resize((256, 256)) # 元のサイズに戻す
             # img_crop.save(temp_output_dir + file_name + "_crop.png") # 画像保存
@@ -163,7 +164,7 @@ class ML:
             # img_resize = compress(im)
             img_resize = mf.resize(im, self.IMGSHAPE)
             if im.shape != self.IMGSHAPE:
-                print("resized:",im.shape, self.IMGSHAPE)
+                print("resized:", item,im.shape, self.IMGSHAPE)
             return ((img_resize - min(img_resize.flat)) / max(img_resize.flat)).flat # 正規化
 
         for item in path_list:

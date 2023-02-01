@@ -306,7 +306,7 @@ def li2image(lic_result, xzoom=3, yzoom=1):
     # im.show()
     # im.save(out)
 
-def resize(array, yx):
+def resize(array, yx):#返値がyxの形と同じだったり逆だったりする。
     if list(array.shape) == list(yx):
         return array
     im = Image.fromarray(array, mode="L")
