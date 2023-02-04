@@ -146,8 +146,11 @@ class ML:
             altarray_save(item,temp_output_dir)
     def load_data(self):
         # 訓練データ
-        self.ALLTARINDATA0 = list(set(list(glob.glob(self.ALTIMAGES0+self.TARGET+"/*")) + self.PATH0TRAIN))
-        self.ALLTARINDATA1 = list(set(list(glob.glob(self.ALTIMAGES1+self.TARGET+"/*")) + self.PATH1TRAIN))
+        #snap49のdilute分だけ訓練データにする
+        self.ALLTARINDATA0 = list(set(list(glob.glob(self.ALTIMAGES0+self.TARGET+f"/*{self.TARGET}_49*")) + self.PATH0TRAIN))
+        self.ALLTARINDATA1 = list(set(list(glob.glob(self.ALTIMAGES1+self.TARGET+f"/*{self.TARGET}_49*")) + self.PATH1TRAIN))
+        # self.ALLTARINDATA0 = list(set(list(glob.glob(self.ALTIMAGES0+self.TARGET+"/*")) + self.PATH0TRAIN))
+        # self.ALLTARINDATA1 = list(set(list(glob.glob(self.ALTIMAGES1+self.TARGET+"/*")) + self.PATH1TRAIN))
         num_of_data_clear = len(self.ALLTARINDATA0) # リコネクションがない画像の枚数
         num_of_data_cloudy = len(self.ALLTARINDATA1) # リコネクションがある画像の枚数
         num_of_data_total = num_of_data_clear + num_of_data_cloudy # 学習データの全枚数
